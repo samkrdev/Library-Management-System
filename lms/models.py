@@ -6,16 +6,44 @@ import uuid
 
 # Create your models here.
 class CustomUser(AbstractUser):
-    pass
+    is_admin = models.BooleanField(default=False)
+
+
+class Author(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    name = models.CharField(max_length=255)
+    bio = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.name
+    
+class Category(models.Model):
+    CATEGORIES = [
+        ("Self Development", "Self Development"),
+        ("Business", "Business"),
+        ("Engineering", "Engineering"),
+        ("Science", "Science"),
+        ("Technology", "Technology"),
+        ("Management", "Management"),
+        ("Fiction", "Fiction"),
+        ("Non-Fiction", "Non-Fiction"),
+        ("Magazines", "Magazines"),
+    ]
+    name = models.CharField(max_length=150, unique=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Book(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     title = models.CharField(max_length=255)
-    author = models.CharField(max_length=255)
+    author = models.ForeignKey(Author, on_delete=models.CASCADE)
     isbn = models.CharField(max_length=13, unique=True)
     total_count = models.IntegerField(default=0)
     available_count = models.IntegerField(default=0)
+    load_count = models.IntegerField(default=0)
+    categories = models.ManyToManyField(Category, help_text="Book Categories")
 
     def __str__(self):
         return self.title

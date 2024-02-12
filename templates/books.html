@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table table-xs">
+    <tr>
+        <th>Title</th>
+        <th>ISBN</th>
+        <th>Total Count</th>
+        <th>Available Count</th>
+    </tr>
+    {% for book in books %}
+    <tr class="hover">
+        <td>{{ book.title }}</td>
+        <td>{{ book.isbn }}</td>
+        <td>{{ book.total_count }}</td>
+        <td>{{ book.available_count }}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+{% extends "base.html" %}
+{% block content %}
+    <h1>Books</h1>
+    {% include 'partials/book_results.html' %}
+{% endblock %}
